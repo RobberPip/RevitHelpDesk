@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="HelpDesk.UserControls.RequestListControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HelpDesk.UserControls" xmlns:helpdesk="clr-namespace:HelpDesk" 
+             mc:Ignorable="d" 
+             Height="550" Width="500">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="33*"/>
+            <ColumnDefinition Width="17*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Ваши заявки:" Grid.ColumnSpan="2"/>
+        <Rectangle Fill="LightGray" 
+                   
+                   Margin="20,5,35,15" 
+                   Grid.Row="1" 
+                   Grid.ColumnSpan="2"/>
+        <ListBox Background="LightGray" 
+                 Grid.Row="1" 
+                 Margin="20,5,35,15"
+                 ItemsSource="{Binding RequestList}" 
+                 Grid.ColumnSpan="2"
+                 Name="RequestListBox"
+                 MouseDoubleClick="RequestInfo">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Theme}" Margin="5"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        <Button Grid.Column="1" 
+                Margin="10,10,35,10" 
+                Content="Создать заявку"
+                Command="{Binding AddRequestWindow}"/>
+    </Grid>
+</UserControl>

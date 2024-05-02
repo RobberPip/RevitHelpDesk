@@ -5,7 +5,11 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B2870F71-1C26-41F0-8B26-AB0F8A57AB20}</ProjectGuid>
+<<<<<<< HEAD
     <OutputType>WinExe</OutputType>
+=======
+    <OutputType>Library</OutputType>
+>>>>>>> 4c2db5e (first version)
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HelpDesk</RootNamespace>
     <AssemblyName>HelpDesk</AssemblyName>
@@ -62,11 +66,19 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RevitAPI">
+<<<<<<< HEAD
       <HintPath>..\..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RevitAPIUI">
       <HintPath>..\..\..\..\..\Program Files\Autodesk\Revit 2022\RevitAPIUI.dll</HintPath>
+=======
+      <HintPath>D:\Revit2024\Program\Revit 2024\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>D:\Revit2024\Program\Revit 2024\RevitAPIUI.dll</HintPath>
+>>>>>>> 4c2db5e (first version)
       <Private>False</Private>
     </Reference>
     <Reference Include="Sdl.MultiSelectComboBox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a6f9048fb51b33ed, processorArchitecture=MSIL">
@@ -83,6 +95,10 @@
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.8.0.0\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
+<<<<<<< HEAD
+=======
+    <Reference Include="System.Drawing" />
+>>>>>>> 4c2db5e (first version)
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -108,6 +124,10 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
+<<<<<<< HEAD
+=======
+    <Reference Include="System.Windows.Forms" />
+>>>>>>> 4c2db5e (first version)
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -115,13 +135,34 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+<<<<<<< HEAD
+=======
+    <Reference Include="UIAutomationClient" />
+>>>>>>> 4c2db5e (first version)
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbProvider.cs" />
+<<<<<<< HEAD
     <Compile Include="GlobalUsing.cs" />
     <Compile Include="JqlBuilder.cs" />
     <Compile Include="Main.cs" />
+=======
+    <Compile Include="Domain\AuthorModel.cs" />
+    <Compile Include="Domain\FileDetailModel.cs" />
+    <Compile Include="GlobalUsing.cs" />
+    <Compile Include="JqlBuilder.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="UserControls\FileDetailControl.xaml.cs">
+      <DependentUpon>FileDetailControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\RequestInfoControl.xaml.cs">
+      <DependentUpon>RequestInfoControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\RequestListControl.xaml.cs">
+      <DependentUpon>RequestListControl.xaml</DependentUpon>
+    </Compile>
+>>>>>>> 4c2db5e (first version)
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -129,7 +170,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Domain\RequestModel.cs" />
+<<<<<<< HEAD
     <Compile Include="test.cs" />
+=======
+>>>>>>> 4c2db5e (first version)
     <Compile Include="UserControls\RequestAddControl.xaml.cs">
       <DependentUpon>RequestAddControl.xaml</DependentUpon>
     </Compile>
@@ -139,10 +183,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+<<<<<<< HEAD
+=======
+    <Page Include="UserControls\FileDetailControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+>>>>>>> 4c2db5e (first version)
     <Page Include="UserControls\RequestAddControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+<<<<<<< HEAD
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -152,6 +204,26 @@
     <Resource Include="dbConfig.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+=======
+    <Page Include="UserControls\RequestInfoControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\RequestListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="dbConfig.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\download_327734.png" />
+>>>>>>> 4c2db5e (first version)
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

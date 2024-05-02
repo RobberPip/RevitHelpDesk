@@ -25,10 +25,22 @@
             <RowDefinition/>
             <RowDefinition Height="9*"/>
         </Grid.RowDefinitions>
+<<<<<<< HEAD
         <Rectangle Fill="LightGray" RadiusX="15" RadiusY="15" Margin="60,5,60,60" Grid.Row="1" Grid.ColumnSpan="2"/>
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="120,30,120,60">
             <Label Content="Тема"/>
             <TextBox Text="{Binding Theme}" Height="20"/>
+=======
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="33*"/>
+            <ColumnDefinition Width="17*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Техническая поддержка [ARO]"/>
+        <Rectangle Fill="LightGray"  Margin="40,5,55,55" Grid.Row="1" Grid.ColumnSpan="2"/>
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="90,30,105,60">
+            <Label Content="Тема*"/>
+            <TextBox Name="Theme" Text="{Binding Theme}" Height="20" TextChanged="Theme_TextChanged"/>
+>>>>>>> 4c2db5e (first version)
             <Label Content="Метки"/>
 
             <sdl:MultiSelectComboBox Height="30"
@@ -43,6 +55,7 @@
             <Label Content="Описание"/>
             <TextBox Text="{Binding Description}" TextWrapping="Wrap" Height="90"/>
             <Button Height="20" Command="{Binding GetAdvanceElements}" Content="Выбрать вспомогательные объекты"/>
+<<<<<<< HEAD
             <TextBox Height="50"/>
             <Grid>
                 <Button Height="20" Content="Добавить файлы" Margin="160,0,0,0"/>
@@ -53,5 +66,49 @@
                 <Button Height="20" Command="{Binding AddRequest}" Content="Создать" Margin="55,0,100,0"/>
             </Grid>
         </StackPanel>
+=======
+            <Grid Height="100" Background="White">
+                <Grid.Resources>
+                    <Style TargetType="TextBlock" x:Key="NoFilesMessageStyle">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding UploadingFiles.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Resources>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding UploadingFiles}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="2" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </ScrollViewer>
+
+
+                <TextBlock Text="Файлы пока не загружены. &#10; Максимальный объём 100мб." 
+                           TextAlignment="Center" 
+                           Style="{StaticResource NoFilesMessageStyle}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+
+            <Grid>
+                <Button Height="20" Content="Добавить файлы" Command="{Binding FileAdd}" Margin="200,0,0,0"/>
+                <Button Height="20" Content="Сделать скриншот" Command="{Binding TakeScreenshot}" Margin="95,0,105,0"/>
+            </Grid>
+            <Grid Margin="0,20,0,0">
+                <Button Height="20" Content="Отмена" Command="{Binding CloseRequest}" Margin="200,0,0,0"/>
+                <Button Height="20" Name="Applay" IsEnabled="False" Command="{Binding AddRequest}" Content="Создать" Margin="95,0,105,0"/>
+            </Grid>
+        </StackPanel>
+        <Button Grid.Column="1" 
+        Margin="10,10,55,10" 
+        Content="Мои заявки"
+        Command="{Binding ListRequestWindow}"/>
+>>>>>>> 4c2db5e (first version)
     </Grid>
 </UserControl>

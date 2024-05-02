@@ -13,7 +13,11 @@ public class Main : IExternalCommand
             return Result.Cancelled;
 
         MainWindow window = new MainWindow(commandData.Application);
+<<<<<<< HEAD
             window.ShowDialog();
+=======
+            window.Show();
+>>>>>>> 4c2db5e (first version)
 
         return Result.Succeeded;
     }

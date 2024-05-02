@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace HelpDesk.UserControls
+=======
+﻿namespace HelpDesk.UserControls
+>>>>>>> 4c2db5e (first version)
 {
     /// <summary>
     /// Логика взаимодействия для RequestAddControl.xaml
@@ -30,5 +34,13 @@ namespace HelpDesk.UserControls
 
             InitializeComponent();
         }
+<<<<<<< HEAD
+=======
+
+        private void Theme_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Applay.IsEnabled = Theme.Text.Length > 0 ? true : false;
+        }
+>>>>>>> 4c2db5e (first version)
     }
 }

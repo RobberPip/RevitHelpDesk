@@ -42,6 +42,7 @@ public class DbProvider
             throw;
         }
     }
+<<<<<<< HEAD
     public async Task AddRequestAsync(int issue_id)
     {
         try
@@ -55,6 +56,56 @@ public class DbProvider
                 command.Parameters.AddWithValue("@issue_id", issue_id);
                 await command.ExecuteNonQueryAsync();
             }
+=======
+    //TODO Перенести в хранимые процедуры БД
+    public async Task AddRequestAsync(long issue_id, RequestModel request)
+    {
+        try
+        {
+            int id = 0;
+            string query;
+            await connection.OpenAsync();
+            if (issue_id != -1)
+            {
+                query =
+                   $"SET search_path = {dbSchema}; INSERT INTO hd_request(issue_id,advance_info) VALUES (@issue_id,@advance_info)";
+
+                using (var command = new NpgsqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@issue_id", issue_id);
+                    command.Parameters.Add("@advance_info", NpgsqlDbType.Bytea).Value = request.fileBytes != null ? request.fileBytes : DBNull.Value;
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+            issue_id = request.IssueId;
+            query =
+                $"SET search_path = {dbSchema}; SELECT id from hd_request WHERE issue_id = @issue_id";
+            using (var command = new NpgsqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@issue_id", issue_id);
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        id = reader.GetInt32(0);
+                    }
+                }
+            }
+            query = $"SET search_path = {dbSchema}; INSERT INTO hd_files(request_id,file) VALUES (@request_id,@file)";
+            using (var command = new NpgsqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@request_id", id);
+                foreach (FileDetailModel item in request.FileDetail)
+                {
+                    NpgsqlParameter fileParameter = command.Parameters.Add("@file", NpgsqlDbType.Bytea);
+                    fileParameter.Value = item.FileBytes;
+                    await command.ExecuteNonQueryAsync();
+                    command.Parameters.Remove(fileParameter);
+                }
+            }
+
+
+>>>>>>> 4c2db5e (first version)
             await connection.CloseAsync();
         }
         catch (Exception ex)
@@ -91,7 +142,12 @@ public class DbProvider
     }
     private static bool ReadConfig()
     {
+<<<<<<< HEAD
         string configFilePath = $@"{AppContext.BaseDirectory}dbConfig.conf";
+=======
+        string exeDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+        string configFilePath = Path.Combine(exeDirectory, "dbConfig.conf");
+>>>>>>> 4c2db5e (first version)
 
         if (!System.IO.File.Exists(configFilePath))
             return false;
