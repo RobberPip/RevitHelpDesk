@@ -12,9 +12,14 @@ public partial class RequestListControl : UserControl
     }
     public MainVM mainVM { get; private set; }
 
-    private void RequestInfo(object sender, MouseButtonEventArgs e)
+    private async void RequestInfo(object sender, MouseButtonEventArgs e)
     {
         mainVM.Request = (RequestModel)RequestListBox.SelectedItem;
-        mainVM.LoadRequest();
+        await mainVM.LoadRequest();
     }
+    private void ColumnHeader_Click(object sender, MouseButtonEventArgs e)
+    {
+        e.Handled = true;
+    }
+
 }

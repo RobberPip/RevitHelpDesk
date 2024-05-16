@@ -42,21 +42,6 @@ public class DbProvider
             throw;
         }
     }
-<<<<<<< HEAD
-    public async Task AddRequestAsync(int issue_id)
-    {
-        try
-        {   
-            await connection.OpenAsync();
-            var query =
-                $"SET search_path = {dbSchema}; INSERT INTO hd_request(issue_id) VALUES (@issue_id)";
-
-            using (var command = new NpgsqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@issue_id", issue_id);
-                await command.ExecuteNonQueryAsync();
-            }
-=======
     //TODO Перенести в хранимые процедуры БД
     public async Task AddRequestAsync(long issue_id, RequestModel request)
     {
@@ -105,7 +90,6 @@ public class DbProvider
             }
 
 
->>>>>>> 4c2db5e (first version)
             await connection.CloseAsync();
         }
         catch (Exception ex)
@@ -142,12 +126,8 @@ public class DbProvider
     }
     private static bool ReadConfig()
     {
-<<<<<<< HEAD
-        string configFilePath = $@"{AppContext.BaseDirectory}dbConfig.conf";
-=======
         string exeDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
         string configFilePath = Path.Combine(exeDirectory, "dbConfig.conf");
->>>>>>> 4c2db5e (first version)
 
         if (!System.IO.File.Exists(configFilePath))
             return false;

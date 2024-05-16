@@ -5,9 +5,6 @@ public class RequestModel
     public string Theme { get; set; }   
     public ObservableCollection<string> Tags {  get; set; } 
     public string Description { get; set; }
-<<<<<<< HEAD
-
-=======
     public byte[] fileBytes { get; set; }
     public ObservableCollection<FileDetailModel> FileDetail = new ObservableCollection<FileDetailModel>();
     // TODO Присвоение UID значения из коннектора
@@ -17,5 +14,4 @@ public class RequestModel
     public Dictionary<long, AuthorModel> Comments = new Dictionary<long, AuthorModel>();
     public string Status { get; set; }
     public string CommentMessage { get; set; }
->>>>>>> 4c2db5e (first version)
 }

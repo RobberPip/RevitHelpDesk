@@ -21,4 +21,8 @@ public partial class RequestInfoControl : UserControl
         }
     }
 
+    private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        SendButton.IsEnabled=MessageBox.Text.Length > 0?true:false;
+    }
 }

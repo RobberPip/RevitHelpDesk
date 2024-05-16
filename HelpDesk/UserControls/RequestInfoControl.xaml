@@ -14,8 +14,8 @@
         </Grid.RowDefinitions>
         <Label Content="{Binding Heading}" Margin="15,0,125,97"/>
         <Button Command="{Binding GoBack}" Content="Назад" Margin="390,9,35,98"/>
-        <TextBox Text="{Binding Message}" Margin="20,33,35,32" TextWrapping="Wrap"  KeyDown="TextBox_KeyDown"/>
-        <Button Command="{Binding SendInfo}" Margin="385,93,35,10" Content="Отправить"/>
+        <TextBox Name="MessageBox" Text="{Binding Message}" Margin="20,33,35,32" TextWrapping="Wrap"  KeyDown="TextBox_KeyDown" TextChanged="TextBox_TextChanged"/>
+        <Button Name="SendButton" Command="{Binding SendInfo}" Margin="385,93,35,10" Content="Отправить" IsEnabled="{Binding IsEnabledSend}"/>
         <Button Content="Добавить файлы" Command="{Binding FileAdd}" Margin="125,93,273,10"/>
         <Button Content="Сделать скриншот" Command="{Binding TakeScreenshot}" Margin="20,93,375,10"/>
         <Label Content="Активность" Margin="15,95,405,305" Grid.Row="1"/>

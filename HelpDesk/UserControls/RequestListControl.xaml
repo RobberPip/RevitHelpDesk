@@ -16,24 +16,24 @@
             <RowDefinition Height="9*"/>
         </Grid.RowDefinitions>
         <Label Content="Ваши заявки:" Grid.ColumnSpan="2"/>
-        <Rectangle Fill="LightGray" 
-                   
-                   Margin="20,5,35,15" 
-                   Grid.Row="1" 
-                   Grid.ColumnSpan="2"/>
-        <ListBox Background="LightGray" 
-                 Grid.Row="1" 
-                 Margin="20,5,35,15"
-                 ItemsSource="{Binding RequestList}" 
-                 Grid.ColumnSpan="2"
-                 Name="RequestListBox"
-                 MouseDoubleClick="RequestInfo">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Theme}" Margin="5"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <ListView Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Name="RequestListBox" MouseDoubleClick="RequestInfo"
+                  Margin="20,5,35,15" ItemsSource="{Binding RequestList}" SelectionMode="Extended">
+            <ListView.Resources>
+                <!-- Стиль для отключения действий при нажатии на заголовки столбцов -->
+                <Style TargetType="GridViewColumnHeader">
+                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ColumnHeader_Click" />
+                </Style>
+            </ListView.Resources>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Key}">Тег</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Theme}" Width="100">Тема</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Status}">Статус</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Contractor}">Исполнитель</GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
         
         <Button Grid.Column="1" 
                 Margin="10,10,35,10" 

@@ -1,16 +1,4 @@
-<<<<<<< HEAD
-﻿using Autodesk.Revit.UI.Selection;
-using Newtonsoft.Json;
-using System;
-
-namespace HelpDesk;
-
-public class MainVM : INotifyPropertyChanged
-{
-    public MainVM() { }
-    public MainVM(UIApplication application)
-=======
-﻿using System.Windows.Forms;
+using System.Windows.Forms;
 
 namespace HelpDesk;
 
@@ -19,39 +7,20 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
     public MainVM() { }
     private Window _window;
     public MainVM(UIApplication application, Window window)
->>>>>>> 4c2db5e (first version)
     {
         uiapp = application;
         uidoc = uiapp.ActiveUIDocument;
         app = uiapp.Application;
         doc = uidoc.Document;
-<<<<<<< HEAD
-    }
-=======
         _window = window;
 
         exEvent = ExternalEvent.Create(this);
     }
     public ExternalEvent exEvent { get; set; }
->>>>>>> 4c2db5e (first version)
     UIApplication uiapp { get; set; }
     UIDocument uidoc { get; set; }
     Autodesk.Revit.ApplicationServices.Application app { get; set; }
     Document doc { get; set; }
-<<<<<<< HEAD
-    private ObservableCollection<UserControl> _userControls = new ObservableCollection<UserControl>();
-    public ObservableCollection<UserControl> UserControls
-    {
-        get { return _userControls; }
-        set
-        {
-            _userControls = value;
-            OnPropertyChanged(nameof(UserControls));
-        }
-    }
-    private DbProvider _dbProvider = new DbProvider();
-    public RequestModel Request { get; set; }
-=======
     private UserControl _userControl = new UserControl();
     public UserControl ActiveUserControl
     {
@@ -84,7 +53,6 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
     }
     private DbProvider _dbProvider = new DbProvider();
     public  RequestModel Request = new RequestModel();
->>>>>>> 4c2db5e (first version)
     private string _theme;
     public string Theme
     {
@@ -95,8 +63,6 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
             OnPropertyChanged(nameof(Theme));
         }
     }
-<<<<<<< HEAD
-=======
     private string _heading;
     public string Heading
     {
@@ -107,7 +73,6 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
             OnPropertyChanged(nameof(Heading));
         }
     }
->>>>>>> 4c2db5e (first version)
     private string _description;
     public string Description
     {
@@ -146,15 +111,6 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
     }
     public async void LoadWindow()
     {
-<<<<<<< HEAD
-        UserControls.Add(new RequestAddControl());
-        RequestModel model = new RequestModel()
-        {
-            Tags = await _dbProvider.GetTagsAsync()
-        };
-        Items = model.Tags;
-    }
-=======
         RequestModel requestModel = new RequestModel();
         List<RequestModel> requests = await JqlBuilder.GetNameRequests(requestModel.UID);
         foreach (RequestModel request in requests) { RequestList.Add(request); }
@@ -231,7 +187,6 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
         return "Return";
     }
 
->>>>>>> 4c2db5e (first version)
     private RelayCommand _addRequest;
     public RelayCommand AddRequest
     {
@@ -240,19 +195,6 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
             return _addRequest ??
               (_addRequest = new RelayCommand(async obj =>
               {
-<<<<<<< HEAD
-                  Request = new RequestModel()
-                  {
-                      Theme = this.Theme,
-                      Description = this.Description,
-                      Tags = this.SelectedTags,
-                  };
-                  int issueId = await JqlBuilder.SendPostRequest(Request);
-                  await _dbProvider.AddRequestAsync(issueId);
-              }));
-        }
-    }
-=======
                   Request = new RequestModel();
                   Request.Theme = this.Theme;
                   Request.Description = this.Description;
@@ -286,7 +228,6 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
     }
 
 
->>>>>>> 4c2db5e (first version)
     private RelayCommand _getAdvanceElements;
     public RelayCommand GetAdvanceElements
     {
@@ -295,12 +236,6 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
             return _getAdvanceElements ??
               (_getAdvanceElements = new RelayCommand(obj =>
               {
-<<<<<<< HEAD
-                  Reference reference = uidoc.Selection.PickObject(ObjectType.Element);
-                  Element element = uidoc.Document.GetElement(reference);
-                  string json = JsonConvert.SerializeObject(element);
-                  MessageBox.Show(json);
-=======
                   exEvent.Raise();
               }));
         }
@@ -533,7 +468,6 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
                   Request = _;
                   LoadRequest();
 
->>>>>>> 4c2db5e (first version)
               }));
         }
     }

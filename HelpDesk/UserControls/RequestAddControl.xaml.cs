@@ -25,13 +25,14 @@ namespace HelpDesk.UserControls
     /// </summary>
     public partial class RequestAddControl : UserControl
     {
-        public RequestAddControl()
+        private MainVM mainVM {  get; set; }
+        public RequestAddControl(MainVM mainVM)
         {
             var executingAssembly = System.Reflection.Assembly.GetExecutingAssembly();
             var directory = System.IO.Path.GetDirectoryName(executingAssembly.Location);
             var dllPath = System.IO.Path.Combine(directory, "Sdl.MultiSelectComboBox.dll");
             Assembly.LoadFrom(dllPath);
-
+            this.mainVM = mainVM;
             InitializeComponent();
         }
 <<<<<<< HEAD
@@ -39,7 +40,7 @@ namespace HelpDesk.UserControls
 
         private void Theme_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Applay.IsEnabled = Theme.Text.Length > 0 ? true : false;
+           mainVM.Apply = Theme.Text.Length > 0 ? true : false;
         }
 >>>>>>> 4c2db5e (first version)
     }

@@ -1,5 +1,4 @@
 ﻿namespace HelpDesk.Domain;
-
 public class FileDetailModel
 {
     public string FileName { get; set; }
