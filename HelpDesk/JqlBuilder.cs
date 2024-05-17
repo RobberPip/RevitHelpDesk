@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace HelpDesk;
 
@@ -10,24 +10,27 @@ public class JqlBuilder
     }
     public static async Task<long> SendPostRequest(RequestModel _request)
     {
-
-        //TODO Вынести в конфиг
         string jiraApiHost = "https://jira.arogroup.ru/rest/api/2";
         string url = $"{jiraApiHost}/issue";
-        string labelsString = string.Join(",", _request.Tags.Select(tag => "\"" + tag + "\""));
-        string jsonContent = @"
+        string[] labelsArray = _request.Tags.Select(tag => tag).ToArray();
+        var jsonContentObject = new
         {
-            ""update"": {},
-            ""fields"": {
-                ""issuetype"": { ""id"": ""10209"" }, 
-                ""project"": { ""id"": ""11501"" }, 
-                ""summary"": """ + _request.Theme + @""",
-                ""description"": """ + _request.Description + @""",
-                ""labels"": [" + labelsString + @"],
-                ""customfield_10704"": """ + _request.UID + @"""
+            fields = new
+            {
+                issuetype = new { id = "10209" },
+                project = new { id = "11501" },
+                summary = _request.Theme,
+                description = _request.Description ?? "",
+                labels = labelsArray.Length > 0 ? labelsArray : null,
+                customfield_10704 = _request.UID,
+                assignee = _request.Contractor != null ? new { name = _request.Contractor } : null
             }
-                
-        }";
+        };
+
+
+        // Преобразуем объект в JSON строку
+        string jsonContent = JsonConvert.SerializeObject(jsonContentObject);
+
 
         using (HttpClient client = new HttpClient())
         {
@@ -56,13 +59,22 @@ public class JqlBuilder
         JObject jObject = JObject.Parse(await GetRequests(UID));
         JArray issues = (JArray)jObject["issues"];
         List<RequestModel> result = new List<RequestModel>();
-        foreach (JObject issue in issues)
+        foreach (var jToken in issues)
         {
+            var issue = (JObject)jToken;
             RequestModel model = new RequestModel()
             {
-                Theme = (string)issue["fields"]["summary"],
+                Key = (string)issue["key"],
+                Theme = (string)issue["fields"]?["summary"],
                 IssueId = (long)issue["id"],
-                Status = (string)issue["fields"]["status"]["name"]
+                Status = (string)issue["fields"]?["status"]?["name"],
+                Contractor = issue["fields"] is JObject fields 
+                             && fields.TryGetValue("assignee", out var assignee) 
+                             && assignee is JObject assigneeObject 
+                             && assigneeObject.TryGetValue("displayName", out var displayName)
+                    ? (string)displayName
+                    : "Общий"
+
             };
             result.Add(model);
         }
@@ -121,6 +133,23 @@ public class JqlBuilder
                 return 1;
             }
             return -1;
+        }
+    }
+    public static async Task<(int TasksCount, bool Success)> GetActiveTasks(string contractor)
+    {
+        string jiraApiHost = $"https://jira.arogroup.ru/rest/api/2/search?jql=";
+        string filter = $"project = AISHD AND (resolution is EMPTY OR resolution not in (Done, Готово)) AND assignee = {contractor}";
+        try
+        {
+            JObject jObject = JObject.Parse(await GetResponse(jiraApiHost + filter));
+            int countRequests = (int)jObject["total"];
+            bool success = jObject["warningMessages"] == null || !jObject["warningMessages"].Any();
+            return (countRequests, success);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error fetching tasks for contractor {contractor}: {ex.Message}");
+            return (0, false);
         }
     }
 }

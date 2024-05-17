@@ -1,6 +1,4 @@
-﻿using HelpDesk.UserControls;
-
-namespace HelpDesk;
+﻿namespace HelpDesk;
 public partial class MainWindow : Window
 {
     private MainVM mainVM;
@@ -9,6 +7,6 @@ public partial class MainWindow : Window
         InitializeComponent();
         mainVM = new MainVM(application,this);
         DataContext = mainVM;
-        ((MainVM)DataContext).LoadWindow();  
+        Loaded += async (sender, e) => await mainVM.LoadWindow();
     }
 }

@@ -4,7 +4,7 @@
 library
 C#
 .cs
-C:\Users\Denis\Documents\MyProject\HelpDesk\HelpDesk\obj\Debug\
+C:\Users\Denis\Desktop\Новая папка\helpdesk-plugin\HelpDesk\obj\Debug\
 HelpDesk
 none
 false
@@ -13,8 +13,8 @@ DEBUG;TRACE
 5964056232
 
 15249808843
-38-833947463
+38301636521
 MainWindow.xaml;UserControls\FileDetailControl.xaml;UserControls\RequestAddControl.xaml;UserControls\RequestInfoControl.xaml;UserControls\RequestListControl.xaml;
 
-False
+True
 

@@ -5,22 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HelpDesk"
         mc:Ignorable="d"
-<<<<<<< HEAD
-        Title="MainWindow" Height="550" Width="500"
-         ResizeMode="NoResize">
-    <Grid>
-        <ContentControl>
-            <StackPanel>
-                <ItemsControl ItemsSource="{Binding UserControls}"/>
-            </StackPanel>
-        </ContentControl>
-    </Grid>
-=======
         Title="MainWindow" Height="580" Width="500"
          ResizeMode="NoResize">
     <Grid>
         <ContentControl Content="{Binding ActiveUserControl}"/>
     </Grid>
 
->>>>>>> 4c2db5e (first version)
 </Window>

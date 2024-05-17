@@ -25,12 +25,6 @@
             <RowDefinition/>
             <RowDefinition Height="9*"/>
         </Grid.RowDefinitions>
-<<<<<<< HEAD
-        <Rectangle Fill="LightGray" RadiusX="15" RadiusY="15" Margin="60,5,60,60" Grid.Row="1" Grid.ColumnSpan="2"/>
-        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="120,30,120,60">
-            <Label Content="Тема"/>
-            <TextBox Text="{Binding Theme}" Height="20"/>
-=======
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="33*"/>
             <ColumnDefinition Width="17*"/>
@@ -40,7 +34,6 @@
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="90,30,105,60">
             <Label Content="Тема*"/>
             <TextBox Name="Theme" Text="{Binding Theme}" Height="20" TextChanged="Theme_TextChanged"/>
->>>>>>> 4c2db5e (first version)
             <Label Content="Метки"/>
 
             <sdl:MultiSelectComboBox Height="30"
@@ -55,18 +48,6 @@
             <Label Content="Описание"/>
             <TextBox Text="{Binding Description}" TextWrapping="Wrap" Height="90"/>
             <Button Height="20" Command="{Binding GetAdvanceElements}" Content="Выбрать вспомогательные объекты"/>
-<<<<<<< HEAD
-            <TextBox Height="50"/>
-            <Grid>
-                <Button Height="20" Content="Добавить файлы" Margin="160,0,0,0"/>
-                <Button Height="20" Content="Сделать скриншот" Margin="55,0,100,0"/>
-            </Grid>
-            <Grid Margin="0,70,0,0">
-                <Button Height="20" Content="Отмена" Margin="160,0,0,0"/>
-                <Button Height="20" Command="{Binding AddRequest}" Content="Создать" Margin="55,0,100,0"/>
-            </Grid>
-        </StackPanel>
-=======
             <Grid Height="100" Background="White">
                 <Grid.Resources>
                     <Style TargetType="TextBlock" x:Key="NoFilesMessageStyle">
@@ -109,6 +90,5 @@
         Margin="10,10,55,10" 
         Content="Мои заявки"
         Command="{Binding ListRequestWindow}"/>
->>>>>>> 4c2db5e (first version)
     </Grid>
 </UserControl>

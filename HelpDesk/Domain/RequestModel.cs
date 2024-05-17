@@ -1,5 +1,4 @@
 ﻿namespace HelpDesk;
-
 public class RequestModel
 {
     public string Theme { get; set; }   
@@ -14,4 +13,6 @@ public class RequestModel
     public Dictionary<long, AuthorModel> Comments = new Dictionary<long, AuthorModel>();
     public string Status { get; set; }
     public string CommentMessage { get; set; }
+    public string Contractor {  get; set; }
+    public string Key { get; set; }
 }

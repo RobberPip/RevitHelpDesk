@@ -1,59 +1,28 @@
-using System.Windows.Forms;
-
-namespace HelpDesk;
-
+﻿namespace HelpDesk;
 public class MainVM : INotifyPropertyChanged, IExternalEventHandler
 {
-    public MainVM() { }
+    #region AuxiliaryFields
     private Window _window;
-    public MainVM(UIApplication application, Window window)
-    {
-        uiapp = application;
-        uidoc = uiapp.ActiveUIDocument;
-        app = uiapp.Application;
-        doc = uidoc.Document;
-        _window = window;
-
-        exEvent = ExternalEvent.Create(this);
-    }
-    public ExternalEvent exEvent { get; set; }
-    UIApplication uiapp { get; set; }
-    UIDocument uidoc { get; set; }
-    Autodesk.Revit.ApplicationServices.Application app { get; set; }
-    Document doc { get; set; }
-    private UserControl _userControl = new UserControl();
-    public UserControl ActiveUserControl
-    {
-        get { return _userControl; }
-        set
-        {
-            _userControl = value;
-            OnPropertyChanged(nameof(ActiveUserControl));
-        }
-    }
-    private ObservableCollection<UserControl> _uploadingFiles = new ObservableCollection<UserControl>();
-    public ObservableCollection<UserControl> UploadingFiles
-    {
-        get { return _uploadingFiles; }
-        set
-        {
-            _uploadingFiles = value;
-            OnPropertyChanged(nameof(UploadingFiles));
-        }
-    }
-    private ObservableCollection<UserControl> _advanceFiles = new ObservableCollection<UserControl>();
-    public ObservableCollection<UserControl> AdvanceFiles
-    {
-        get { return _advanceFiles; }
-        set
-        {
-            _advanceFiles = value;
-            OnPropertyChanged(nameof(AdvanceFiles));
-        }
-    }
-    private DbProvider _dbProvider = new DbProvider();
-    public  RequestModel Request = new RequestModel();
     private string _theme;
+    private bool _apply = false;
+    private string _message;
+    private string _heading;
+    private string _description;
+    private bool _isEnabledSend = false;
+    private UserControl _userControl = new UserControl();
+    private RelayCommand _addRequest;
+    private RelayCommand _getAdvanceElements;
+    private RelayCommand _fileAdd;
+    private RelayCommand _fileDelete;
+    private RelayCommand _takeScreenshot;
+    private RelayCommand _closeRequest;
+    private RelayCommand _listRequestWindow;
+    private RelayCommand _addRequestWindow;
+    private RelayCommand _goBack;
+    private RelayCommand _sendInfo;
+    public event PropertyChangedEventHandler PropertyChanged;
+    #endregion
+    #region Fields
     public string Theme
     {
         get { return _theme; }
@@ -63,7 +32,15 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
             OnPropertyChanged(nameof(Theme));
         }
     }
-    private string _heading;
+    public bool Apply
+    {
+        get { return _apply; }
+        set
+        {
+            _apply = value;
+            OnPropertyChanged(nameof(Apply));
+        }
+    }
     public string Heading
     {
         get { return _heading; }
@@ -73,7 +50,6 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
             OnPropertyChanged(nameof(Heading));
         }
     }
-    private string _description;
     public string Description
     {
         get { return _description; }
@@ -83,111 +59,49 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
             OnPropertyChanged(nameof(Description));
         }
     }
-    private ObservableCollection<string> _items;
-    public ObservableCollection<string> Items
+    public string Message
     {
-        get { return _items; }
+        get { return _message; }
         set
         {
-            _items = value;
-            OnPropertyChanged(nameof(Items));
+            _message = value;
+            OnPropertyChanged(nameof(Message));
         }
     }
-    private ObservableCollection<string> _selectedTags = new ObservableCollection<string>();
-    public ObservableCollection<string> SelectedTags
+    public bool IsEnabledSend
     {
-        get { return _selectedTags; }
+        get { return _isEnabledSend; }
         set
         {
-            _selectedTags = value;
-            OnPropertyChanged(nameof(SelectedTags));
+            _isEnabledSend = value;
+            OnPropertyChanged(nameof(IsEnabledSend));
         }
     }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-    protected virtual void OnPropertyChanged(string propertyName)
+    public UserControl ActiveUserControl
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-    public async void LoadWindow()
-    {
-        RequestModel requestModel = new RequestModel();
-        List<RequestModel> requests = await JqlBuilder.GetNameRequests(requestModel.UID);
-        foreach (RequestModel request in requests) { RequestList.Add(request); }
-        if (RequestList.Count > 0) { ActiveUserControl = new RequestListControl(this); }
-        else
+        get { return _userControl; }
+        set
         {
-            ActiveUserControl =new RequestAddControl();
-            requestModel.Tags = await _dbProvider.GetTagsAsync();
-            Items = requestModel.Tags;
+            _userControl = value;
+            OnPropertyChanged(nameof(ActiveUserControl));
         }
     }
-    public async void LoadRequest()
-    {
-        AdvanceFiles.Clear();
-        Message = null;
+    private DbProvider _dbProvider = new DbProvider();
+    public RequestModel Request = new RequestModel();
+    public Document doc { get; set; }
+    public ExternalEvent exEvent { get; set; }
+    UIApplication uiapp { get; set; }
+    UIDocument uidoc { get; set; }
+    Autodesk.Revit.ApplicationServices.Application app { get; set; }
+    public ObservableCollection<UserControl> UploadingFiles { get; set; } = new ObservableCollection<UserControl>();
+    public ObservableCollection<UserControl> AdvanceFiles { get; set; } = new ObservableCollection<UserControl>();
+    public ObservableCollection<string> Items { get; set; } = new ObservableCollection<string>();
+    public ObservableCollection<string> SelectedTags { get; set; } = new ObservableCollection<string>();
+    public ObservableCollection<RequestModel> RequestList { get; set; } = new ObservableCollection<RequestModel>();
+    public Dictionary<long, AuthorModel> AuthorsDictionary { get; set; } = new Dictionary<long, AuthorModel>();
 
-        ActiveUserControl = null;
-        ActiveUserControl = new RequestInfoControl();
-        Request = await JqlBuilder.GetRequestComment(Request);
-        var reversedDictionary = new Dictionary<long, AuthorModel>();
-        foreach (var item in Request.Comments.Reverse())
-        {
-            reversedDictionary.Add(item.Key, item.Value);
-        }
-        AuthorsDictionary = reversedDictionary;
-        Heading = $"{Request.Theme}:{Request.Status}";
-    }
-
-
-
-
-
-    public void Execute(UIApplication app)
-    {
-        using (Transaction tr = new Transaction(doc, "Export IFC"))
-        {
-
-            try
-            {
-                IList<ElementId> elementIds = new List<ElementId>();
-                _window.Hide();
-                IList<Reference> refList = uidoc.Selection.PickObjects(ObjectType.Element, "Select");
-                var d = uidoc.Selection.GetElementIds();
-                tr.Start();
-                foreach (Reference r in refList)
-                {
-                    ElementId eid = doc.GetElement(r).Id;
-                    elementIds.Add(eid);
-                }
-                doc.ActiveView.IsolateElementsTemporary(elementIds);
-                uidoc.ShowElements(elementIds);
-                IFCExportOptions options = new IFCExportOptions();
-                options.FilterViewId = doc.ActiveView.Id;
-                string appDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                string fileName = Guid.NewGuid().ToString() + ".ifc";
-                string filePath = Path.Combine(appDataFolderPath, fileName);
-                doc.Export(appDataFolderPath, fileName, options);
-                doc.ActiveView.DisableTemporaryViewMode(TemporaryViewMode.TemporaryHideIsolate);
-                tr.Commit();
-                Request.fileBytes = File.ReadAllBytes(filePath);
-                File.Delete(filePath);
-                _window.Show();
-            }
-            catch (Exception)
-            {
-                tr.RollBack();
-
-            }
-        }
-    }
-
-    public string GetName()
-    {
-        return "Return";
-    }
-
-    private RelayCommand _addRequest;
+    #endregion
+    #region Commands
     public RelayCommand AddRequest
     {
         get
@@ -195,6 +109,7 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
             return _addRequest ??
               (_addRequest = new RelayCommand(async obj =>
               {
+                  Apply = false;
                   Request = new RequestModel();
                   Request.Theme = this.Theme;
                   Request.Description = this.Description;
@@ -210,9 +125,11 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
                             FileBytes = fileControl.FileDetail.FileBytes
                         })
                 );
-
-                  long issueId = await JqlBuilder.SendPostRequest(Request);
-                  await _dbProvider.AddRequestAsync(issueId, Request);
+                  string contractor = await GetContractor(Request);
+                  Request.Contractor = (contractor != default) ? contractor : Request.Contractor;
+                  Request.IssueId = await JqlBuilder.SendPostRequest(Request);
+                  await _dbProvider.AddRequestAsync(Request);
+                  await SaveFiles(Request);
                   ActiveUserControl = null;
                   RequestList.Clear();
                   List<RequestModel> requests = await JqlBuilder.GetNameRequests(Request.UID);
@@ -226,9 +143,6 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
               }));
         }
     }
-
-
-    private RelayCommand _getAdvanceElements;
     public RelayCommand GetAdvanceElements
     {
         get
@@ -240,7 +154,6 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
               }));
         }
     }
-    private RelayCommand _fileAdd;
     public RelayCommand FileAdd
     {
         get
@@ -294,7 +207,6 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
               }));
         }
     }
-    private RelayCommand _fileDelete;
     public RelayCommand FileDelete
     {
         get
@@ -310,7 +222,6 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
               }));
         }
     }
-    private RelayCommand _takeScreenshot;
     public RelayCommand TakeScreenshot
     {
         get
@@ -354,7 +265,6 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
               }));
         }
     }
-    private RelayCommand _closeRequest;
     public RelayCommand CloseRequest
     {
         get
@@ -366,24 +276,21 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
               }));
         }
     }
-    public ObservableCollection<RequestModel> RequestList { get; set; } = new ObservableCollection<RequestModel>();
-    private RelayCommand _addRequestWindow;
     public RelayCommand AddRequestWindow
     {
         get
         {
             return _addRequestWindow ??
-              (_addRequestWindow = new RelayCommand(async obj =>
+              (_addRequestWindow = new RelayCommand(obj =>
               {
                   ActiveUserControl = null;
-                  ActiveUserControl = new RequestAddControl();
+                  ActiveUserControl = new RequestAddControl(this);
                   RequestModel requestModel = new RequestModel();
-                  requestModel.Tags = await _dbProvider.GetTagsAsync();
+                  requestModel.Tags = _dbProvider.GetTags();
                   Items = requestModel.Tags;
               }));
         }
     }
-    private RelayCommand _listRequestWindow;
     public RelayCommand ListRequestWindow
     {
         get
@@ -401,42 +308,20 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
               }));
         }
     }
-    private RelayCommand _goBack;
     public RelayCommand GoBack
     {
         get
         {
             return _goBack ??
-              (_goBack = new RelayCommand(obj =>
+              (_goBack = new RelayCommand(async obj =>
               {
                   ActiveUserControl = null;
                   RequestList.Clear();
-                  LoadWindow();
+                  await LoadWindow();
 
               }));
         }
     }
-    private Dictionary<long, AuthorModel> _authorsDictionary;
-    public Dictionary<long, AuthorModel> AuthorsDictionary
-    {
-        get { return _authorsDictionary; }
-        set
-        {
-            _authorsDictionary = value;
-            OnPropertyChanged(nameof(AuthorsDictionary));
-        }
-    }
-    private string _message;
-    public string Message
-    {
-        get { return _message; }
-        set
-        {
-            _message = value;
-            OnPropertyChanged(nameof(Message));
-        }
-    }
-    private RelayCommand _sendInfo;
     public RelayCommand SendInfo
     {
         get
@@ -444,6 +329,7 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
             return _sendInfo ??
               (_sendInfo = new RelayCommand(async obj =>
               {
+                  IsEnabledSend = false;
                   Request.FileDetail = new ObservableCollection<FileDetailModel>(
                   this.AdvanceFiles
                         .Cast<FileDetailControl>()
@@ -458,7 +344,11 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
                   Request.CommentMessage = Message;
                   await JqlBuilder.SendPostComment(Request);
                   DbProvider db = new DbProvider();
-                  await db.AddRequestAsync(-1,Request);
+                  long tempIssueId = Request.IssueId;
+                  Request.IssueId = -1;
+                  await db.AddRequestAsync(Request);
+                  await SaveFiles(Request);
+                  Request.IssueId = tempIssueId;
                   RequestModel _ = new RequestModel()
                   {
                       IssueId = Request.IssueId,
@@ -466,11 +356,168 @@ public class MainVM : INotifyPropertyChanged, IExternalEventHandler
                       Status = Request.Status,
                   };
                   Request = _;
-                  LoadRequest();
-
+                  await LoadRequest();
+                  IsEnabledSend = true;
               }));
+        }
+    }
+    #endregion
+    public MainVM(UIApplication application, Window window)
+    {
+        uiapp = application;
+        uidoc = uiapp.ActiveUIDocument;
+        app = uiapp.Application;
+        doc = uidoc.Document;
+        _window = window;
+        exEvent = ExternalEvent.Create(this);
+    }
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    public async Task LoadWindow()
+    {
+        RequestModel requestModel = new RequestModel();
+        List<RequestModel> requests = await JqlBuilder.GetNameRequests(requestModel.UID);
+        foreach (RequestModel request in requests) { RequestList.Add(request); }
+        if (RequestList.Count > 0) { ActiveUserControl = new RequestListControl(this); }
+        else
+        {
+            ActiveUserControl = new RequestAddControl(this);
+            requestModel.Tags = _dbProvider.GetTags();
+            Items = requestModel.Tags;
+        }
+    }
+    public async Task LoadRequest()
+    {
+        AdvanceFiles.Clear();
+        Message = null;
+
+        ActiveUserControl = null;
+        ActiveUserControl = new RequestInfoControl();
+        Request = await JqlBuilder.GetRequestComment(Request);
+        var reversedDictionary = new Dictionary<long, AuthorModel>();
+        foreach (var item in Request.Comments.Reverse())
+        {
+            reversedDictionary.Add(item.Key, item.Value);
+        }
+        AuthorsDictionary = reversedDictionary;
+        Heading = $"{Request.Theme}:{Request.Status}";
+    }
+    public void Execute(UIApplication app)
+{
+    using (Transaction tr = new Transaction(doc, "Export IFC"))
+    {
+        try
+        {
+            IList<ElementId> elementIds = new List<ElementId>();
+            _window.Hide();
+            IList<Reference> refList = uidoc.Selection.PickObjects(ObjectType.Element, "Select");
+            tr.Start();
+            foreach (Reference item in refList)
+            {
+                ElementId eid = doc.GetElement(item).Id;
+                elementIds.Add(eid);
+            }
+            doc.ActiveView.IsolateElementsTemporary(elementIds);
+            uidoc.ShowElements(elementIds);
+            IFCExportOptions options = new IFCExportOptions();
+            options.FilterViewId = doc.ActiveView.Id;
+            string appDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string fileName = Guid.NewGuid().ToString();
+            string filePath = Path.Combine(appDataFolderPath, fileName+".ifc");
+            doc.Export(appDataFolderPath, fileName+".ifc", options);
+            doc.ActiveView.DisableTemporaryViewMode(TemporaryViewMode.TemporaryHideIsolate);
+            
+            string outputElemntIds = string.Join(",", elementIds);
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                using (StreamWriter streamWriter = new StreamWriter(memoryStream))
+                {
+                    streamWriter.Write("Элементы: " +outputElemntIds);
+                    streamWriter.Flush();
+                    long fileSize = memoryStream.Length;
+                    byte[] bytes = memoryStream.ToArray();
+                    string fileInfoName = "Выбранные элементы IFC " + fileName +".txt";
+                    BuildFile(fileInfoName, fileSize, bytes);
+                }
+            }
+
+            FileInfo fileInfo = new FileInfo(filePath);
+            BuildFile(fileName+".ifc",fileInfo.Length,File.ReadAllBytes(filePath));
+            tr.Commit();
+            File.Delete(filePath);
+            _window.Show();
+        }
+        catch (Exception)
+        {
+            tr.RollBack();
         }
     }
 }
 
+    private void BuildFile(string fileName,long size,byte[] bytes)
+    {
+        var fileDetail = new FileDetailModel()
+        {
+            FileName = fileName,
+            FileSize = string.Format($"{(size / 1.049e+6).ToString("0.0")} {"Mb"}"),
+            FileBytes = bytes
+        };
+        FileDetailControl _file = new FileDetailControl() { FileDetail = fileDetail };
+        UploadingFiles.Add(_file);
+    }
+    public string GetName()
+    {
+        return "Return";
+    }
+    public async Task<string> GetContractor(RequestModel request)
+    {
+        var contractors = await _dbProvider.GetContractorsAsync();
+        Func<KeyValuePair<int, (string, List<string>)>, double> matchPercentageFunc = p =>
+        {
+            return (double)p.Value.Item2.Intersect(request.Tags).Count() / request.Tags.Count * 100;
+        };
+        double maxMatchPercentage = contractors.Max(matchPercentageFunc);
+        var maxMatchContractors = contractors.Where(p => matchPercentageFunc(p) == maxMatchPercentage && maxMatchPercentage > 50);
+        var tasks = maxMatchContractors.Select(async contractor =>
+        {
+            var (tasksCount, success) = await JqlBuilder.GetActiveTasks(contractor.Value.Item1);
+            if (success)
+            {
+                return (ContractorName: contractor.Value.Item1, TasksCount: tasksCount);
+            }
+            return default;
+        }).Where(task => task != default).ToArray();
 
+        await Task.WhenAll(tasks);
+
+        var minTasksContractor = tasks
+            .Where(task => task.Result != default) // Фильтруем успешные результаты
+            .Select(task => task.Result)
+            .OrderBy(taskInfo => taskInfo.TasksCount)
+            .FirstOrDefault();
+
+        if (minTasksContractor != default)
+        {
+            return minTasksContractor.ContractorName;
+        }
+        return default;
+    }
+    public async Task SaveFiles(RequestModel requestModel)
+    {
+        string assemblyPath = Assembly.GetExecutingAssembly().Location;
+        string assemblyDirectory = Path.GetDirectoryName(assemblyPath);
+        string requestsFilesDirectory = Path.Combine(assemblyDirectory, "RequestsFiles");
+        string requestDirectory = Path.Combine(requestsFilesDirectory, requestModel.IssueId.ToString());
+        new[] { requestsFilesDirectory, requestDirectory }
+            .Where(dir => !Directory.Exists(dir))
+            .ToList()
+            .ForEach(dir => Directory.CreateDirectory(dir));
+        foreach (FileDetailModel item in requestModel.FileDetail)
+        {
+            string filePath = Path.Combine(requestDirectory, item.FileName);
+            File.WriteAllBytes(filePath, item.FileBytes);
+        }
+    }
+}

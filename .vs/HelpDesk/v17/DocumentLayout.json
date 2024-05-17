@@ -1,21 +1,21 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Denis\\Documents\\MyProject\\HelpDesk\\",
+  "WorkspaceRootPath": "C:\\Users\\Denis\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\helpdesk-plugin\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B2870F71-1C26-41F0-8B26-AB0F8A57AB20}|HelpDesk\\HelpDesk.csproj|c:\\users\\denis\\documents\\myproject\\helpdesk\\helpdesk\\usercontrols\\requestaddcontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{B2870F71-1C26-41F0-8B26-AB0F8A57AB20}|HelpDesk\\HelpDesk.csproj|c:\\users\\denis\\desktop\\\u043D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\helpdesk-plugin\\helpdesk\\usercontrols\\requestaddcontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{B2870F71-1C26-41F0-8B26-AB0F8A57AB20}|HelpDesk\\HelpDesk.csproj|solutionrelative:helpdesk\\usercontrols\\requestaddcontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B2870F71-1C26-41F0-8B26-AB0F8A57AB20}|HelpDesk\\HelpDesk.csproj|C:\\Users\\Denis\\Documents\\MyProject\\HelpDesk\\helpdesk\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{B2870F71-1C26-41F0-8B26-AB0F8A57AB20}|HelpDesk\\HelpDesk.csproj|C:\\Users\\Denis\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\helpdesk-plugin\\helpdesk\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{B2870F71-1C26-41F0-8B26-AB0F8A57AB20}|HelpDesk\\HelpDesk.csproj|solutionrelative:helpdesk\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B2870F71-1C26-41F0-8B26-AB0F8A57AB20}|HelpDesk\\HelpDesk.csproj|C:\\Users\\Denis\\Documents\\MyProject\\HelpDesk\\helpdesk\\viewmodels\\mainvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B2870F71-1C26-41F0-8B26-AB0F8A57AB20}|HelpDesk\\HelpDesk.csproj|C:\\Users\\Denis\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\helpdesk-plugin\\helpdesk\\viewmodels\\mainvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B2870F71-1C26-41F0-8B26-AB0F8A57AB20}|HelpDesk\\HelpDesk.csproj|solutionrelative:helpdesk\\viewmodels\\mainvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B2870F71-1C26-41F0-8B26-AB0F8A57AB20}|HelpDesk\\HelpDesk.csproj|C:\\Users\\Denis\\Documents\\MyProject\\HelpDesk\\helpdesk\\jqlbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B2870F71-1C26-41F0-8B26-AB0F8A57AB20}|HelpDesk\\HelpDesk.csproj|C:\\Users\\Denis\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\helpdesk-plugin\\helpdesk\\jqlbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B2870F71-1C26-41F0-8B26-AB0F8A57AB20}|HelpDesk\\HelpDesk.csproj|solutionrelative:helpdesk\\jqlbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -50,9 +50,9 @@
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "MainVM.cs",
-              "DocumentMoniker": "C:\\Users\\Denis\\Documents\\MyProject\\HelpDesk\\HelpDesk\\ViewModels\\MainVM.cs",
+              "DocumentMoniker": "C:\\Users\\Denis\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\helpdesk-plugin\\HelpDesk\\ViewModels\\MainVM.cs",
               "RelativeDocumentMoniker": "HelpDesk\\ViewModels\\MainVM.cs",
-              "ToolTip": "C:\\Users\\Denis\\Documents\\MyProject\\HelpDesk\\HelpDesk\\ViewModels\\MainVM.cs",
+              "ToolTip": "C:\\Users\\Denis\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\helpdesk-plugin\\HelpDesk\\ViewModels\\MainVM.cs",
               "RelativeToolTip": "HelpDesk\\ViewModels\\MainVM.cs",
               "ViewState": "AQIAAIMBAAAAAAAAAAAswNEBAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -63,9 +63,9 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "RequestAddControl.xaml",
-              "DocumentMoniker": "C:\\Users\\Denis\\Documents\\MyProject\\HelpDesk\\HelpDesk\\UserControls\\RequestAddControl.xaml",
+              "DocumentMoniker": "C:\\Users\\Denis\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\helpdesk-plugin\\HelpDesk\\UserControls\\RequestAddControl.xaml",
               "RelativeDocumentMoniker": "HelpDesk\\UserControls\\RequestAddControl.xaml",
-              "ToolTip": "C:\\Users\\Denis\\Documents\\MyProject\\HelpDesk\\HelpDesk\\UserControls\\RequestAddControl.xaml",
+              "ToolTip": "C:\\Users\\Denis\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\helpdesk-plugin\\HelpDesk\\UserControls\\RequestAddControl.xaml",
               "RelativeToolTip": "HelpDesk\\UserControls\\RequestAddControl.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2024-05-09T19:32:10.176Z",
@@ -75,10 +75,10 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "MainWindow.xaml",
-              "DocumentMoniker": "C:\\Users\\Denis\\Documents\\MyProject\\HelpDesk\\HelpDesk\\MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\Denis\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\helpdesk-plugin\\HelpDesk\\MainWindow.xaml",
               "RelativeDocumentMoniker": "HelpDesk\\MainWindow.xaml",
               "ToolTip": "C:\\Users\\Denis\\Documents\\MyProject\\HelpDesk\\HelpDesk\\MainWindow.xaml*",
-              "RelativeToolTip": "HelpDesk\\MainWindow.xaml*",
+              "RelativeToolTip": "..\\..\\..\\Documents\\MyProject\\HelpDesk\\HelpDesk\\MainWindow.xaml*",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2024-05-09T19:31:10.603Z"
             },
@@ -86,9 +86,9 @@
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "JqlBuilder.cs",
-              "DocumentMoniker": "C:\\Users\\Denis\\Documents\\MyProject\\HelpDesk\\HelpDesk\\JqlBuilder.cs",
+              "DocumentMoniker": "C:\\Users\\Denis\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\helpdesk-plugin\\HelpDesk\\JqlBuilder.cs",
               "RelativeDocumentMoniker": "HelpDesk\\JqlBuilder.cs",
-              "ToolTip": "C:\\Users\\Denis\\Documents\\MyProject\\HelpDesk\\HelpDesk\\JqlBuilder.cs",
+              "ToolTip": "C:\\Users\\Denis\\Desktop\\\u041D\u043E\u0432\u0430\u044F \u043F\u0430\u043F\u043A\u0430\\helpdesk-plugin\\HelpDesk\\JqlBuilder.cs",
               "RelativeToolTip": "HelpDesk\\JqlBuilder.cs",
               "ViewState": "AQIAAHUAAAAAAAAAAAAuwIoAAABAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",

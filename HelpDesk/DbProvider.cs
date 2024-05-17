@@ -14,26 +14,26 @@ public class DbProvider
         }
         (connection, dbSchema) = InitDbConnection();
     }
-    public async Task<ObservableCollection<string>> GetTagsAsync()
+    public ObservableCollection<string> GetTags()
     {
         try
         {
             ObservableCollection<string> tags = new ObservableCollection<string>();
-            await connection.OpenAsync();
+            connection.Open();
             var query =
-                $"SET search_path = {dbSchema}; SELECT tag_name FROM hd_tags";
+                $"SELECT tag_name FROM {dbSchema}.hd_tags";
 
             using (var command = new NpgsqlCommand(query, connection))
             {
-                using (var reader = await command.ExecuteReaderAsync())
+                using (var reader = command.ExecuteReader())
                 {
-                    while (await reader.ReadAsync())
+                    while (reader.Read())
                     {
                         tags.Add(reader.GetString(0));
                     }
                 }
             }
-            await connection.CloseAsync();
+            connection.Close();
             return tags;
         }
         catch (Exception ex)
@@ -42,32 +42,68 @@ public class DbProvider
             throw;
         }
     }
-    //TODO Перенести в хранимые процедуры БД
-    public async Task AddRequestAsync(long issue_id, RequestModel request)
+    public async Task<Dictionary<int, (string, List<string>)>> GetContractorsAsync()
+    {
+        try
+        {
+            Dictionary<int, (string, List<string>)> contractorDictionary = new Dictionary<int, (string, List<string>)>();
+            await connection.OpenAsync();
+            var query =
+                $"SET search_path = {dbSchema}; SELECT hd_contractors.id,name,tag_name FROM hd_contractors " +
+                $"JOIN hd_contractors_tags ON contractor_id = hd_contractors.id " +
+                $"JOIN hd_tags ON tag_id = hd_tags.id";
+
+            using (var command = new NpgsqlCommand(query, connection))
+            {
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        int id = reader.GetInt32(0);
+                        string name = reader.GetString(1);
+                        string tag = reader.GetString(2);
+                        if (contractorDictionary.ContainsKey(id))
+                        {
+                            contractorDictionary[id].Item2.Add(tag);
+                        }
+                        else
+                        {
+                            contractorDictionary[id] = (name, new List<string> { tag });
+                        }
+                    }
+                }
+            }
+            await connection.CloseAsync();
+            return contractorDictionary;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Detailed description of the error: {ex}");
+            throw;
+        }
+    }
+    public async Task AddRequestAsync(RequestModel request)
     {
         try
         {
             int id = 0;
             string query;
             await connection.OpenAsync();
-            if (issue_id != -1)
+            if (request.IssueId != -1)
             {
                 query =
-                   $"SET search_path = {dbSchema}; INSERT INTO hd_request(issue_id,advance_info) VALUES (@issue_id,@advance_info)";
-
+                   $"INSERT INTO {dbSchema}.hd_request(issue_id,contractor_id) VALUES (@issue_id,(SELECT id FROM {dbSchema}.hd_contractors WHERE name = '{request.Contractor}'))";
                 using (var command = new NpgsqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@issue_id", issue_id);
-                    command.Parameters.Add("@advance_info", NpgsqlDbType.Bytea).Value = request.fileBytes != null ? request.fileBytes : DBNull.Value;
+                    command.Parameters.AddWithValue("@issue_id", request.IssueId);
                     await command.ExecuteNonQueryAsync();
                 }
             }
-            issue_id = request.IssueId;
             query =
-                $"SET search_path = {dbSchema}; SELECT id from hd_request WHERE issue_id = @issue_id";
+                $"SELECT id from {dbSchema}.hd_request WHERE issue_id = @issue_id";
             using (var command = new NpgsqlCommand(query, connection))
             {
-                command.Parameters.AddWithValue("@issue_id", issue_id);
+                command.Parameters.AddWithValue("@issue_id", request.IssueId);
                 using (var reader = await command.ExecuteReaderAsync())
                 {
                     if (await reader.ReadAsync())
@@ -76,7 +112,7 @@ public class DbProvider
                     }
                 }
             }
-            query = $"SET search_path = {dbSchema}; INSERT INTO hd_files(request_id,file) VALUES (@request_id,@file)";
+            query = $"INSERT INTO {dbSchema}.hd_files(request_id,file) VALUES (@request_id,@file)";
             using (var command = new NpgsqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@request_id", id);
