@@ -350,4 +350,8 @@ MigrationBackup/
 .ionide/
 
 #Rider files
+<<<<<<< HEAD
 .idea
+=======
+.idea
+>>>>>>> ee6dbde (add gitignore)
